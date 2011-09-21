@@ -4,35 +4,35 @@ import groovyx.gpars.actor.DefaultActor;
 
 class GCometChannel extends DefaultActor {
 
-	def clients = []	
+	def subscribers = []	
 
 	void act() {
 		loop {
 			react {message ->
 				switch (message) {
-					case RegisterMessage:
-						clients << message.client
+					case SubscribeMessage:
+						subscribers << message.subscriber
 						break
-					case UnregisterMessage:
-						clients.remove(message.client)
+					case UnsubscribeMessage:
+						subscribers.remove(message.subscriber)
 						break
-					case UpdateStateMessage:
-						clients.each {it << message.state}
+					case UpdateComponentStateMessage:
+						subscribers.each {it << message.subscriber}
 						break
 				}
 			}
 		}
 	}
 	
-	def register(ComponentClient client) {
+	def subscribe(GCometChannelSubscriber subscriber) {
 		this << new RegisterMessage(client: client)
 	}
 	
-	def unregister(ComponentClient client) {
-		this << new UnregisterMessage(client: client)
+	def unsubscribe(GCometChannelSubscriber subscriber) {
+		this << new UnsubscribeMessage(subscriber: subscriber)
 	}
 	
-	def update(ComponentState state) {
-		this << new UpdateStateMessage(state: state.clone())
+	def update(GCometComponentState state) {
+		this << new UpdateComponentStateMessage(state: state.clone())
 	}
 }

@@ -5,9 +5,9 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
 
 
-class ComponentClient extends DefaultActor {
+class GCometChannelSubscriber extends DefaultActor {
 
-	private Queue states = new LinkedBlockingQueue<ComponentState>()
+	private Queue states = new LinkedBlockingQueue<GCometComponentState>()
 	
 	void act() {
 		loop {
@@ -18,7 +18,7 @@ class ComponentClient extends DefaultActor {
 	}
 
 	def getStates(timeout) {
-		def result = new ArrayList<ComponentState>()
+		def result = new ArrayList<GCometComponentState>()
 		if (states.size() > 0) {
 			while (states.size() > 0) {
 				result << states.take()
