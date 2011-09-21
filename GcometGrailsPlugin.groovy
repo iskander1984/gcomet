@@ -1,3 +1,7 @@
+import org.grails.plugin.gcomet.GCometComponentArtefactHandler
+import org.grails.plugin.gcomet.GCometChannel
+import org.apache.commons.logging.LogFactory
+
 class GcometGrailsPlugin {
     // the plugin version
     def version = "0.1"
@@ -12,8 +16,8 @@ class GcometGrailsPlugin {
 
     // TODO Fill in these fields
     def title = "Gcomet Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "Oleksandr Pochapskyy, Vitalii Osaulenko"
+    def authorEmail = "olexandr.pochapskiy@gmail.com"
     def description = '''\
 Brief summary/description of the plugin.
 '''
@@ -24,26 +28,39 @@ Brief summary/description of the plugin.
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
-
-    // Details of company behind the plugin (if there is one)
-//    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
-
-    // Any additional developers beyond the author specified above.
-//    def developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
+    def license = "APACHE"
 
     // Location of the plugin's issue tracker.
 //    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
 
     // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.grails-plugins.codehaus.org/browse/grails-plugins/" ]
+    def scm = [ url: "https://github.com/iskander1984/gcomet" ]
 
+	def artefacts = [GCometComponentArtefactHandler]
+	
+	def watchedResources = ["file:./grails-app/gcometcomponents/**/*"] 
+	
+	def log = LogFactory.getLog(GcometGrailsPlugin)
+	
+	static final GCOMET_COMPONENT_BEANS = { gcometComponent ->
+	    "${gcometComponent.fullName}"(gcometComponent.clazz) { bean ->
+            bean.singleton = true
+            bean.autowire = "byName"
+        } 
+	}
+	
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
     }
 
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+        for(gcometComponent in application.getArtefacts(GCometComponentArtefactHandler.TYPE)) { 
+			gcometComponent.metaClass.mixin(GCometChannel)
+			def callable = GCOMET_COMPONENT_BEANS.curry(gcometComponent)
+			callable.delegate = delegate
+            callable.call() 
+			log.debug "Registered GComet component: ${gcometComponent}"	
+		}
     }
 
     def doWithDynamicMethods = { ctx ->
@@ -51,7 +68,6 @@ Brief summary/description of the plugin.
     }
 
     def doWithApplicationContext = { applicationContext ->
-        // TODO Implement post initialization spring config (optional)
     }
 
     def onChange = { event ->

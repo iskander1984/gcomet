@@ -1,8 +1,8 @@
-package org.grails.plugin.gcomet
+package org.grails.plugin.gcomet;
 
-import groovyx.gpars.actor.DefaultActor
+import groovyx.gpars.actor.DefaultActor;
 
-class Component extends DefaultActor {
+class GCometChannel extends DefaultActor {
 
 	def clients = []	
 
