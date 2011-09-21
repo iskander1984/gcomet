@@ -25,7 +25,7 @@ class GCometChannel extends DefaultActor {
 	}
 	
 	def subscribe(GCometChannelSubscriber subscriber) {
-		this << new RegisterMessage(client: client)
+		this << new SubscribeMessage(subscriber: subscriber)
 	}
 	
 	def unsubscribe(GCometChannelSubscriber subscriber) {

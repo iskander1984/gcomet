@@ -1,4 +1,4 @@
-package grails.comet.gpars
+package org.grails.plugin.gcomet
 
 class GcometTagLib {
 	static namespace = "gcomet"
