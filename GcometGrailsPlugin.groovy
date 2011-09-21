@@ -40,6 +40,14 @@ Brief summary/description of the plugin.
 	
 	def watchedResources = ["file:./grails-app/gcometcomponents/**/*"] 
 	
+	 def pluginExcludes = [
+			'grails-app/gcometcomponents/*',
+			'grails-app/conf/*',
+			'test/functional/*',
+			'test/unit/*',
+			'test/integration/*',
+    ] 
+	
 	def log = LogFactory.getLog(GcometGrailsPlugin)
 	
 	static final GCOMET_COMPONENT_BEANS = { gcometComponent ->
