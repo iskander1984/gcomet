@@ -11,7 +11,12 @@ class GcometGrailsPlugin {
     def dependsOn = [:]
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-        "grails-app/views/error.gsp"
+        'grails-app/views/error.gsp',
+		'grails-app/gcometcomponents/**/*',
+		'grails-app/conf/*',
+		'test/functional/*',
+		'test/unit/*',
+		'test/integration/*',
     ]
 
     // TODO Fill in these fields
@@ -39,14 +44,6 @@ Brief summary/description of the plugin.
 	def artefacts = [GCometComponentArtefactHandler]
 	
 	def watchedResources = ["file:./grails-app/gcometcomponents/**/*"] 
-	
-	 def pluginExcludes = [
-			'grails-app/gcometcomponents/*',
-			'grails-app/conf/*',
-			'test/functional/*',
-			'test/unit/*',
-			'test/integration/*',
-    ] 
 	
 	def log = LogFactory.getLog(GcometGrailsPlugin)
 	
