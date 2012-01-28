@@ -17,7 +17,8 @@ class GCometChannel extends DefaultActor {
 						subscribers.remove(message.subscriber)
 						break
 					case UpdateComponentStateMessage:
-						subscribers.each {it << message.subscriber}
+						println "MESSAGE STATE" + message.state
+						subscribers.each {it << message.state}
 						break
 				}
 			}

@@ -4,7 +4,7 @@ import org.apache.commons.logging.LogFactory
 
 class GcometGrailsPlugin {
     // the plugin version
-    def version = "0.1"
+    def version = "0.1.2"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on
@@ -48,7 +48,7 @@ Brief summary/description of the plugin.
 	def log = LogFactory.getLog(GcometGrailsPlugin)
 	
 	static final GCOMET_COMPONENT_BEANS = { gcometComponent ->
-	    "${gcometComponent.fullName}"(gcometComponent.clazz) { bean ->
+	    "${gcometComponent.name}GCometComponent"(gcometComponent.clazz) { bean ->
             bean.singleton = true
             bean.autowire = "byName"
         } 
@@ -64,8 +64,10 @@ Brief summary/description of the plugin.
 			def callable = GCOMET_COMPONENT_BEANS.curry(gcometComponent)
 			callable.delegate = delegate
             callable.call() 
-			log.debug "Registered GComet component: ${gcometComponent}"	
+			log.debug "Registered GComet component: ${gcometComponent.name}"	
+			
 		}
+		log.debug delegate.beanDefinitions
     }
 
     def doWithDynamicMethods = { ctx ->
@@ -73,6 +75,7 @@ Brief summary/description of the plugin.
     }
 
     def doWithApplicationContext = { applicationContext ->
+		
     }
 
     def onChange = { event ->

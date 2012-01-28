@@ -13,7 +13,7 @@ var components = new Array()
 
 function longPoolRequest(){
 	$.getJSON(
-		'pullMessages',
+		'gcomet/pullMessages',
 		function(data){
 			updateComponents(data);
 			longPoolRequest();
@@ -40,7 +40,7 @@ function registerGCometComponents(){
 
 function registerGCometComponent(id, updateHandler){
 	var component = new GCometComponent(id, updateHandler);
-	$.ajax({url: "subscribe"});
+	$.ajax({url: "gcomet/subscribe?id=" + id});
 	components.push(component);
 }
 

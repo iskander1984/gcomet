@@ -1,0 +1,18 @@
+<plugin name='gcomet' version='0.1.2' grailsVersion='2.0 &gt; *'>
+  <author>Oleksandr Pochapskyy, Vitalii Osaulenko</author>
+  <authorEmail>olexandr.pochapskiy@gmail.com</authorEmail>
+  <title>Gcomet Plugin</title>
+  <description>Brief summary/description of the plugin.
+</description>
+  <documentation>http://grails.org/plugin/gcomet</documentation>
+  <type>GcometGrailsPlugin</type>
+  <resources>
+    <resource>gcomet.GcometController</resource>
+    <resource>ChatGCometComponent</resource>
+    <resource>gcomet.SomeGCometComponent</resource>
+    <resource>SessionChannelSet</resource>
+    <resource>org.grails.plugin.gcomet.GcometTagLib</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>
