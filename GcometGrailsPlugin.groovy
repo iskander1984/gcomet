@@ -63,11 +63,10 @@ Brief summary/description of the plugin.
 			gcometComponent.metaClass.mixin(GCometChannel)
 			def callable = GCOMET_COMPONENT_BEANS.curry(gcometComponent)
 			callable.delegate = delegate
-            callable.call() 
-			log.debug "Registered GComet component: ${gcometComponent.name}"	
-			
+            callable.call()
+			log.debug "Registered GComet component: ${gcometComponent.name}"		
 		}
-		log.debug delegate.beanDefinitions
+		//log.debug delegate.beanDefinitions
     }
 
     def doWithDynamicMethods = { ctx ->
@@ -75,7 +74,12 @@ Brief summary/description of the plugin.
     }
 
     def doWithApplicationContext = { applicationContext ->
-		
+		for(gcometComponent in application.getArtefacts(GCometComponentArtefactHandler.TYPE)) { 
+			def component = applicationContext.getBean("${gcometComponent.name}GCometComponent")
+			component.name = gcometComponent.name
+			component.start()
+			log.debug "Started GComet component: ${component.name}"		
+		}
     }
 
     def onChange = { event ->

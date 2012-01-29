@@ -3,7 +3,7 @@ package org.grails.plugin.gcomet;
 import groovyx.gpars.actor.DefaultActor;
 
 class GCometChannel extends DefaultActor {
-
+	def name
 	def subscribers = []	
 
 	void act() {
@@ -17,23 +17,10 @@ class GCometChannel extends DefaultActor {
 						subscribers.remove(message.subscriber)
 						break
 					case UpdateComponentStateMessage:
-						println "MESSAGE STATE" + message.state
-						subscribers.each {it << message.state}
+						subscribers.each {it << new PutComponentStateMessage(state: message.state)}
 						break
 				}
 			}
 		}
-	}
-	
-	def subscribe(GCometChannelSubscriber subscriber) {
-		this << new SubscribeMessage(subscriber: subscriber)
-	}
-	
-	def unsubscribe(GCometChannelSubscriber subscriber) {
-		this << new UnsubscribeMessage(subscriber: subscriber)
-	}
-	
-	def update(GCometComponentState state) {
-		this << new UpdateComponentStateMessage(state: state.clone())
 	}
 }

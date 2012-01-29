@@ -6,13 +6,19 @@ import java.util.concurrent.TimeUnit
 
 
 class GCometChannelSubscriber extends DefaultActor {
-
 	private Queue states = new LinkedBlockingQueue<GCometComponentState>()
 	
 	void act() {
 		loop {
 			react {message ->
-				states.put(message)
+				switch (message){
+					case PutComponentStateMessage:
+						states.put(message.state)
+						break;
+					case GetComponentStateMessage:
+						reply getStates(3000)
+						break;
+				}
 			}
 		}
 	}
