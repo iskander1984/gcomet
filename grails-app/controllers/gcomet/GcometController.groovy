@@ -4,29 +4,29 @@ import org.grails.plugin.gcomet.GCometComponentState
 import grails.converters.*
 
 class GcometController {
-	def channelService
+	def componentService
 	
     def subscribe = {
 		def componentId = params.id
 		def component = applicationContext.getBean("${componentId}GCometComponent")
-		channelService.subscribeCurrentUserTo(component)
+		componentService.subscribeCurrentUserTo(component)
 		render ' '
 	}
 		
 	def update = {
 		def componentId = params.id
-		def channel = applicationContext.getBean("${componentId}GCometComponent")
+		def component = applicationContext.getBean("${componentId}GCometComponent")
 		def state = new GCometComponentState()
 		state.componentId = componentId
 		params.each { key, value -> 
 			state."$key" = value
 		}
-		channelService.update(state, channel)
+		componentService.update(state, component)
 		render ' '
 	}
 	
 	def pullMessages = {
-		def states = channelService.retrieveStateUpdatesForUser()
+		def states = componentService.retrieveStateUpdatesForUser()
 		render (states as JSON).toString()
 	}
 
