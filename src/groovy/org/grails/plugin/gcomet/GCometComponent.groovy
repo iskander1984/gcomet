@@ -19,9 +19,6 @@ class GCometComponent extends DefaultActor {
 					case UpdateComponentStateMessage:
 						subscribers.each {it << new PutComponentStateMessage(state: message.state)}
 						break
-					case IsSubscribedMessage:
-						reply subscribers.size() > 0
-						break
 				}
 			}
 		}

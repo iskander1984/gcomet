@@ -6,7 +6,7 @@ function GCometComponent(id, updateHandler){
 
 GCometComponent.prototype.update = function(version, changeSet){
 	this.version = version;
-	eval(this.updateHandler + "('" + changeSet + "')");
+	if (changeSet!== undefined) eval(this.updateHandler + "('" + $.toJSON(changeSet) + "')");
 }
 
 var components = new Array()
@@ -24,10 +24,25 @@ function longPoolRequest(){
 function updateComponents(data){
 	if (!data) return;
 	$.each(data, function(index, value) {
-		components[0].update(1, $.toJSON(value.storage));
-	}
-	);
+		$.each(value, function(index, state){
+			var storage = state.storage;
+			var componentId = storage.componentId;
+			getComponentById(componentId).update(1, storage);
+		});
+	});
 }
+
+function getComponentById(id){
+	var component;
+	$.each(components, function(index, value){
+		if (value.id == id) {
+			component = components[index];
+			return false;
+		}
+	});
+	return component;
+}
+
 
 function registerGCometComponents(){
 	var components = $("span[type='gcomet']");
